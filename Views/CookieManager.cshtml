@@ -1,0 +1,57 @@
+﻿@inherits UmbracoViewPage
+@{
+    Layout = "MasterPageV3.cshtml";
+}
+
+<section class="@Html.Partial("ContentContainerCssClass")">
+    
+    @* START CONTENT COLUMN *@
+    <div class="content @(Model.GetPropertyValue<bool>(" isFullWidth") ? "full" : null)">
+
+        @Umbraco.Field("bodyText")
+
+        <h2>Non-essential cookies</h2>
+        <p>We do also use third party services to gather information on how our website is used, which helps us improve our pages and overall website design. These services have their own cookies, but as they aren't essential to how our website works you can choose if you want to accept them or not. </p> 
+        <p>We have detailed each of these under the following headings. You can click on either the "Accept all" or the "Reject all" button to set them all in one go, or you may choose to turn specific services on or off using the button next to each heading.</p>
+        <p>Your choices will be saved automatically, and will apply when you move onto a different page on our website. You can opt out anytime by revisiting this page to update your settings.</p>
+
+        <button onclick="setcookieacceptall(true)" class="button primary" title="Accept all cookie usage" name="Accept all cookie usage">Accept all</button>
+        <button onclick="setcookierejectall()" class="button secondary" title="Reject all cookie usage" name="Reject all cookie usage">Reject all</button>
+        
+        <p>
+            &nbsp;
+        </p>
+        @{
+
+            if (Model.GetPropertyValue("cookieRepoLink").ToString() != "")
+            {
+                IPublishedContent cookieRepo = Umbraco.Content(Model.GetPropertyValue("cookieRepoLink"));
+                if (cookieRepo.Children.Any())
+                {
+                    foreach (IPublishedContent cookietype in cookieRepo.Children())
+                    {
+                        string cookieName = cookietype.GetPropertyValue<string>("cookieType");
+
+                        <div class="align-left">
+                            <div>
+                                <h3 class="align-left">@cookietype.Name</h3>
+                                <button onclick="buttonclick('@cookieName')" id="@cookieName" class="button @cookieName align-right" name="Toggle @cookietype.Name usage" title="Toggle @cookietype.Name usage">On/Off</button>
+                            </div>
+
+                            <div class="align-left">
+                                @cookietype.GetPropertyValue("cookieInformation")
+                            </div>
+                        </div>
+                    }
+                }
+
+            }
+        }
+    </div>
+    @* END CONTENT COLUMN *@
+    @* START SIDEBAR *@
+    @Html.Partial("SidebarSecondaryNav")
+    @Umbraco.RenderMacro("SidebarRelatedContent", new { showRelLinks = "1", showRelDocs = "1", showNewsItems = "1", showNewsArchive = "1" })
+    @* END SIDEBAR *@
+</section>
+@Html.Partial("WebChatPopup")
