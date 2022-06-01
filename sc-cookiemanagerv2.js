@@ -6,7 +6,7 @@
 // SC_COOKIE_SI (Site Improve)
 // M Sheridan 2019
 // D Shepherd - adding functionality for 'Reject all' option 02/Aug/2021
-// M Sheridan - refactored to minimise JQuery useage and improve support for older browsers
+// M Sheridan - refactored to minimise JQuery useage and improve support for older browsers May 22
 
 // globals
 
@@ -45,7 +45,7 @@ var strcookies = ['SC_COOKIE_GA', 'SC_COOKIE_SI', 'SC_COOKIE_ESSENTIAL'];
         setcookie("SC_COOKIE_CHECK", "true", stryear, strmonth, strday);
 
         if(updatebuttons == true) {
-            setvars(strcookies);
+            setBoxes(strcookies);
         }
 
         hideNag('cw');
@@ -70,7 +70,9 @@ var strcookies = ['SC_COOKIE_GA', 'SC_COOKIE_SI', 'SC_COOKIE_ESSENTIAL'];
         stryear = String(strtoday.getFullYear() + 1);        
         setcookie("SC_COOKIE_CHECK", "true", stryear, strmonth, strday);
 
-        setvars(strcookies);
+        if(updatebuttons == true) {
+            setBoxes(strcookies);
+        }
 
     }
 
@@ -128,19 +130,7 @@ var strcookies = ['SC_COOKIE_GA', 'SC_COOKIE_SI', 'SC_COOKIE_ESSENTIAL'];
     }
 
     //sets global cookie variables based on cookiestate at pageload
-    function setvars(cookies) {
-        var arrcookies = cookies.forEach(checkboxes);
-
-        function checkboxes(item, index) {
-            var cookiename = item;
-            
-            if (ping(cookiename) === true) {
-                buttonOn(cookiename);
-            }
-            else {
-                buttonOff(cookiename);
-            }
-        }
+    function setvars() {
 
         if (ping("SC_COOKIE_GA") === true) {
             gacookies = true;
@@ -150,6 +140,25 @@ var strcookies = ['SC_COOKIE_GA', 'SC_COOKIE_SI', 'SC_COOKIE_ESSENTIAL'];
         }
         if (ping("SC_COOKIE_ESSENTIAL") === true) {
             essentialcookies = true;
+        }
+    }
+
+    function setBoxes(cookies){
+        
+        cookies.forEach(checkboxes);
+
+        function checkboxes(item, index) {
+            var cookiename = item;
+            
+            if(document.getElementById(cookiename) != undefined){
+                if (ping(cookiename) === true) {
+                    buttonOn(cookiename);
+                }
+                else {
+                    buttonOff(cookiename);
+                }
+            }
+
         }
     }
 
