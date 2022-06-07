@@ -63,16 +63,12 @@ var strcookies = ['SC_COOKIE_GA', 'SC_COOKIE_SI', 'SC_COOKIE_ESSENTIAL'];
         setcookie("SC_COOKIE_GA", "false", stryear, strmonth, strday);
         setcookie("SC_COOKIE_SI", "false", stryear, strmonth, strday);
         setcookie("SC_COOKIE_ESSENTIAL", "false", stryear, strmonth, strday);
-        togglebutton("SC_COOKIE_GA", true);
-        togglebutton("SC_COOKIE_SI", true);
-        togglebutton("SC_COOKIE_ESSENTIAL", true);
 
         stryear = String(strtoday.getFullYear() + 1);        
         setcookie("SC_COOKIE_CHECK", "true", stryear, strmonth, strday);
+        setBoxes(strcookies);
 
-        if(updatebuttons == true) {
-            setBoxes(strcookies);
-        }
+        hideNag('cw');
 
     }
 
